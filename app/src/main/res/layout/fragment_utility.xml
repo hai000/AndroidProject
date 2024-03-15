@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".UtilityFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:orientation="vertical"
+       android:background="#FFF8F1">
+       <androidx.appcompat.widget.Toolbar android:layout_height="wrap_content"
+           android:background="@color/white"
+           android:layout_width="match_parent">
+           <ImageView
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"/>
+           <TextView
+               android:textSize="45sp"
+               android:textColor="#9F234F"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:text="Tiện ích"/>
+
+       </androidx.appcompat.widget.Toolbar>
+
+       <androidx.cardview.widget.CardView
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+
+           android:layout_margin="20dp"
+           app:cardCornerRadius="10dp">
+              <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                  android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                  >
+                  <LinearLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+
+                      android:gravity="center">
+                        <ImageView
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_marginHorizontal="10dp"
+                            android:src="@drawable/icon_wind"/>
+                      <TextView
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:textColor="@color/black"
+                          android:text="Thời tiết"
+                          android:fontFamily="serif"
+                          android:textAlignment="viewStart"
+                          android:textSize="20sp" />
+                  </LinearLayout>
+
+                  <LinearLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:gravity="center"
+                      >
+                      <ImageView
+                          android:layout_width="35dp"
+                          android:layout_height="35dp"
+
+                          android:layout_marginHorizontal="5dp"
+                          android:src="@drawable/icon_locaction"/>
+                      <TextView
+                          android:fontFamily="serif"
+                          android:layout_height="wrap_content"
+                          android:layout_width="match_parent"
+                          android:textSize="30dp"
+                          android:textColor="@color/black"
+                          android:text="TPHCM"
+                          android:typeface="monospace"/>
+
+                  </LinearLayout>
+                  <GridLayout
+                      android:layout_marginBottom="15dp"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:columnCount="2"
+                      android:rowCount="4">
+                       <LinearLayout
+                          android:layout_columnWeight="1"
+                           android:layout_rowWeight="1"
+                           android:gravity="center_vertical">
+                           <ImageView
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               android:src="@drawable/icon_sunny"/>
+                           <TextView
+                               android:textSize="30sp"
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               android:text="31oC"/>
+                       </LinearLayout>
+                      <TextView
+                            android:layout_marginRight="10dp"
+                          android:layout_columnWeight="1"
+                          android:layout_rowWeight="1"
+                          android:textAlignment="textEnd"
+                          android:gravity="center_vertical"
+                         android:textSize="16sp"
+
+                          android:text="Cảm giác như 35oC"/>
+                      <TextView
+                          android:fontFamily="serif"
+                          android:layout_marginLeft="10dp"
+                          android:text="Trời đẹp"
+                          android:textSize="20sp"
+                          android:textColor="@color/black"
+                          android:layout_columnWeight="1"
+                          android:layout_rowWeight="1"/>
+                      <TextView
+                          android:layout_marginRight="10dp"
+                          android:text="Độ ẩm 56%"
+                          android:textSize="16sp"
+                          android:textAlignment="textEnd"
+                          android:gravity="center_vertical"
+
+                          android:layout_columnWeight="1"
+                          android:layout_rowWeight="1"/>
+                      <TextView
+                          android:layout_marginLeft="10dp"
+                          android:text="Cao: 36o Thấp: 25o"
+                          android:textSize="16sp"
+
+                          android:layout_columnWeight="1"
+                          android:layout_rowWeight="1"/>
+                      <TextView
+                          android:layout_marginRight="10dp"
+                          android:text="Khả năng mưa 5%"
+                          android:textSize="16sp"
+                          android:textAlignment="textEnd"
+                          android:gravity="center_vertical"
+
+                          android:layout_columnWeight="1"
+                          android:layout_rowWeight="1"/>
+                      <TextView
+                          android:layout_marginLeft="10dp"
+                          android:text="Không khí: Trung bình"
+                          android:textSize="16sp"
+
+                          android:layout_columnWeight="1"
+                          android:layout_rowWeight="1"/>
+                      <TextView
+                          android:layout_marginRight="10dp"
+                          android:text="UV: 0/11"
+                          android:textSize="16sp"
+                          android:textAlignment="textEnd"
+                          android:gravity="center_vertical"
+
+                          android:layout_columnWeight="1"
+                          android:layout_rowWeight="1"/>
+                  </GridLayout>
+              </LinearLayout>
+       </androidx.cardview.widget.CardView>
+       <androidx.cardview.widget.CardView
+           app:cardCornerRadius="10dp"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp">
+           <CalendarView
+               android:dateTextAppearance="@style/TextAppearance.AppCompat"
+               
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+
+
+              />
+
+       </androidx.cardview.widget.CardView>
+
+   </LinearLayout>
+
+</FrameLayout>
