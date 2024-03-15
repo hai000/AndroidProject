@@ -63,7 +63,7 @@ public class APIExpress {
 
     @SneakyThrows
     private Document connect(String url) {
-        return Jsoup.connect(url).execute().parse();
+        return Jsoup.connect(url).get();
     }
 }
 
