@@ -1,6 +1,7 @@
 package com.vnexpress.fragment;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -59,7 +60,7 @@ public class DetailNewsFragment extends Fragment implements Obserable {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     WebView webView;
     public static final String TAG = DetailNewsFragment.class.getName();
-    Button btnBack,btnPlay,btnPrev,btnNext;
+    Button btnBack, btnPlay, btnPrev, btnNext;
     View view;
     TextView timeCurrnet, timeTotal;
     SeekBar seekBar;
@@ -79,6 +80,7 @@ public class DetailNewsFragment extends Fragment implements Obserable {
     News news;
     private String mParam2;
     MediaPlayer mediaPlayer;
+    Activity activity;
 
     public DetailNewsFragment() {
 
@@ -122,14 +124,13 @@ public class DetailNewsFragment extends Fragment implements Obserable {
         Bundle bundle = getArguments();
         news = (News) bundle.get("news");
 
+        activity = getActivity();
 
 
+        exoPlayer = new SimpleExoPlayer.Builder(getContext()).build();
 
 
-         exoPlayer = new SimpleExoPlayer.Builder(getContext()).build();
-
-
-        if(news.getCategory().equals(Category.podcast)){
+        if (news.getCategory().equals(Category.podcast)) {
 
             requestCreator = Picasso.get().load(news.getImage());
             cardView = view.findViewById(R.id.nav_audio);
@@ -138,9 +139,9 @@ public class DetailNewsFragment extends Fragment implements Obserable {
                 @Override
                 public void onBitmapLoaded(Bitmap img, Picasso.LoadedFrom from) {
                     // Bitmap đã được tải thành công, bạn có thể sử dụng nó ở đây
-                    bitmap=img;
+                    bitmap = img;
                     int pixelColorFrist = bitmap.getPixel(10, 10);
-                    int pixelColorEnd = bitmap.getPixel(bitmap.getWidth()-10, bitmap.getHeight()-10);
+                    int pixelColorEnd = bitmap.getPixel(bitmap.getWidth() - 10, bitmap.getHeight() - 10);
 
 
                     // Đổi các giá trị màu thành một màu ARGB
@@ -150,7 +151,7 @@ public class DetailNewsFragment extends Fragment implements Obserable {
 
                     GradientDrawable gradientDrawable = new GradientDrawable(
                             GradientDrawable.Orientation.TL_BR,
-                            new int[] {argbColorFirst, argbColorEnd});
+                            new int[]{argbColorFirst, argbColorEnd});
                     gradientDrawable.setCornerRadius(20f);
 
 
@@ -179,27 +180,27 @@ public class DetailNewsFragment extends Fragment implements Obserable {
             btnPlay = view.findViewById(R.id.btnPlay);
             btnPrev = view.findViewById(R.id.btnPrev5s);
             btnNext = view.findViewById(R.id.btnNext5s);
-           requestCreator.into(imgCover);
+            requestCreator.into(imgCover);
             btnPrev.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    exoPlayer.seekTo(exoPlayer.getCurrentPosition()-5000);
+                    exoPlayer.seekTo(exoPlayer.getCurrentPosition() - 5000);
                 }
             });
             btnNext.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    exoPlayer.seekTo(exoPlayer.getCurrentPosition()+5000);
+                    exoPlayer.seekTo(exoPlayer.getCurrentPosition() + 5000);
                 }
             });
             btnPlay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(exoPlayer.isPlaying()){
+                    if (exoPlayer.isPlaying()) {
                         exoPlayer.pause();
                         btnPlay.setBackground(getResources().getDrawable(R.drawable.icon_resume));
-                    }else{
-                        if(exoPlayer.getPlaybackState()==ExoPlayer.STATE_ENDED){
+                    } else {
+                        if (exoPlayer.getPlaybackState() == ExoPlayer.STATE_ENDED) {
                             exoPlayer.seekTo(0);
                         }
                         exoPlayer.play();
@@ -259,11 +260,10 @@ public class DetailNewsFragment extends Fragment implements Obserable {
     public void update(News a) {
 
 
-
         try {
 
             MediaItem mediaItem = MediaItem.fromUri(a.getLinkMp3());
-            getActivity().runOnUiThread(new Runnable() {
+            activity.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
 
@@ -275,17 +275,17 @@ public class DetailNewsFragment extends Fragment implements Obserable {
                     exoPlayer.addListener(new ExoPlayer.Listener() {
                         @Override
                         public void onPlaybackStateChanged(int state) {
-                            if(state==ExoPlayer.STATE_READY){
+                            if (state == ExoPlayer.STATE_READY) {
                                 long durationInSeconds = exoPlayer.getDuration(); // Độ dài của bài hát trong giây (ví dụ)
                                 long minutes = durationInSeconds / 60000;
-                                long seconds =(int) durationInSeconds % 60000/1000;
+                                long seconds = (int) durationInSeconds % 60000 / 1000;
                                 String durationFormatted = String.format("%02d:%02d", minutes, seconds);
                                 timeTotal.setText(durationFormatted);
                                 seekBar.setMax((int) exoPlayer.getDuration());
                                 seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                                     @Override
                                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                                        if(fromUser){
+                                        if (fromUser) {
                                             timeCurrnet.setText(String.format("%02d:%02d", progress / 60000, (progress % 60000) / 1000));
                                             exoPlayer.seekTo(progress);
                                         }
@@ -314,7 +314,7 @@ public class DetailNewsFragment extends Fragment implements Obserable {
                                             @Override
                                             public void run() {
                                                 timeCurrnet.setText(String.format("%02d:%02d", exoPlayer.getCurrentPosition() / 60000, (exoPlayer.getCurrentPosition() % 60000) / 1000));
-                                                seekBar.setProgress((int)(exoPlayer.getCurrentPosition()));
+                                                seekBar.setProgress((int) (exoPlayer.getCurrentPosition()));
                                             }
                                         });
                                     }
@@ -324,10 +324,9 @@ public class DetailNewsFragment extends Fragment implements Obserable {
                                 timer = new Timer();
                                 timer.schedule(timerTask, 0, 1000);
                             }
-                            if(state==ExoPlayer.STATE_ENDED){
+                            if (state == ExoPlayer.STATE_ENDED) {
                                 btnPlay.setBackground(getResources().getDrawable(R.drawable.icon_resume));
                             }
-
 
 
                         }
@@ -374,6 +373,7 @@ public class DetailNewsFragment extends Fragment implements Obserable {
             timer = null;
         }
     }
+
     private Runnable myRunnable = new Runnable() {
         @SneakyThrows
         @Override
