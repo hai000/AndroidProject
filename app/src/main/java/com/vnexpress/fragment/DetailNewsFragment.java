@@ -250,8 +250,6 @@ public class DetailNewsFragment extends Fragment implements Obserable {
         });
 
         new LoadFullNewsAsyncTask().execute();
-
-
         // Inflate the layout for this fragment
         return view;
     }
