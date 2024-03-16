@@ -29,9 +29,11 @@ android {
 }
 
 dependencies {
+    implementation ("androidx.media:media:1.7.0")
     implementation("androidx.media3:media3-exoplayer:1.3.0")
     implementation("androidx.media3:media3-exoplayer-dash:1.3.0")
     implementation("androidx.media3:media3-ui:1.3.0")
+    implementation("androidx.media3:media3-session:1.3.0")
     compileOnly ("com.squareup.okhttp3:okhttp:3.2.0")
     implementation ("com.squareup.picasso:picasso:2.71828")
     implementation("org.jsoup:jsoup:1.17.2")

@@ -1,27 +1,30 @@
 package com.vnexpress.fragment;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.media.AudioAttributes;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.media.browse.MediaBrowser;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.media3.common.MediaItem;
 import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.exoplayer.SimpleExoPlayer;
-import androidx.media3.ui.PlayerView;
 
-import android.os.Handler;
-import android.util.Log;
+
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +34,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.RequestCreator;
@@ -39,11 +41,11 @@ import com.squareup.picasso.Target;
 import com.vnexpress.API.APIExpress;
 import com.vnexpress.API.Category;
 import com.vnexpress.API.News;
+
+import com.vnexpress.MyAplication;
 import com.vnexpress.R;
 import com.vnexpress.models.Obserable;
-import com.vnexpress.models.ObserverNetworking;
 
-import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -79,7 +81,7 @@ public class DetailNewsFragment extends Fragment implements Obserable {
     private String mParam1;
     News news;
     private String mParam2;
-    MediaPlayer mediaPlayer;
+
     Activity activity;
 
     public DetailNewsFragment() {
@@ -113,7 +115,8 @@ public class DetailNewsFragment extends Fragment implements Obserable {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        mediaPlayer = new MediaPlayer();
+
+
     }
 
     @SuppressLint({"UnsafeOptInUsageError", "NewApi"})
@@ -121,6 +124,8 @@ public class DetailNewsFragment extends Fragment implements Obserable {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_detail_news, container, false);
+
+
         Bundle bundle = getArguments();
         news = (News) bundle.get("news");
 
@@ -140,6 +145,9 @@ public class DetailNewsFragment extends Fragment implements Obserable {
                 public void onBitmapLoaded(Bitmap img, Picasso.LoadedFrom from) {
                     // Bitmap đã được tải thành công, bạn có thể sử dụng nó ở đây
                     bitmap = img;
+
+
+
                     int pixelColorFrist = bitmap.getPixel(10, 10);
                     int pixelColorEnd = bitmap.getPixel(bitmap.getWidth() - 10, bitmap.getHeight() - 10);
 
@@ -216,7 +224,8 @@ public class DetailNewsFragment extends Fragment implements Obserable {
         webView.getSettings().setJavaScriptEnabled(true);
 
         float density = getContext().getResources().getDisplayMetrics().density;
-        float px = 90 * density;
+        float widthpx = 88 * density;
+        float highpx = 70 * density;
         // Thiết lập WebViewClient để xử lý các sự kiện trong WebView
         webView.setWebViewClient(new WebViewClient() {
             @Override
@@ -226,8 +235,8 @@ public class DetailNewsFragment extends Fragment implements Obserable {
                 // Thực thi JavaScript sau khi trang đã được load
                 String script = " var images = document.getElementsByTagName('img');\n" +
                         "        for (var i = 0; i < images.length; i++) {\n" +
-                        "            images[i].style.maxWidth = '" + px + "px';\n" +
-                        "            images[i].style.height = '" + px + "px';\n" +
+                        "            images[i].style.maxWidth = '" + widthpx + "px';\n" +
+                        "            images[i].style.height = '" + highpx + "px';\n" +
                         "        };";
                 webView.evaluateJavascript(script, null);
             }
@@ -256,7 +265,7 @@ public class DetailNewsFragment extends Fragment implements Obserable {
 
     @Override
     public void update(News a) {
-
+        news = a;
 
         try {
 
@@ -274,6 +283,7 @@ public class DetailNewsFragment extends Fragment implements Obserable {
                         @Override
                         public void onPlaybackStateChanged(int state) {
                             if (state == ExoPlayer.STATE_READY) {
+
                                 long durationInSeconds = exoPlayer.getDuration(); // Độ dài của bài hát trong giây (ví dụ)
                                 long minutes = durationInSeconds / 60000;
                                 long seconds = (int) durationInSeconds % 60000 / 1000;
@@ -308,14 +318,15 @@ public class DetailNewsFragment extends Fragment implements Obserable {
 
 
                                         // Cập nhật giá trị của SeekBar trong UI Threa
-                                        if(getActivity()!=null){
-                                        getActivity().runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                timeCurrnet.setText(String.format("%02d:%02d", exoPlayer.getCurrentPosition() / 60000, (exoPlayer.getCurrentPosition() % 60000) / 1000));
-                                                seekBar.setProgress((int) (exoPlayer.getCurrentPosition()));
-                                            }
-                                        });}
+                                        if (getActivity() != null) {
+                                            getActivity().runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    timeCurrnet.setText(String.format("%02d:%02d", exoPlayer.getCurrentPosition() / 60000, (exoPlayer.getCurrentPosition() % 60000) / 1000));
+                                                    seekBar.setProgress((int) (exoPlayer.getCurrentPosition()));
+                                                }
+                                            });
+                                        }
                                     }
                                 };
 
@@ -383,4 +394,5 @@ public class DetailNewsFragment extends Fragment implements Obserable {
             bitmap = requestCreator.get();
         }
     };
+
 }

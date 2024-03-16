@@ -1,34 +1,37 @@
 package com.vnexpress;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
 import com.vnexpress.API.News;
 import com.vnexpress.fragment.DetailNewsFragment;
 
 public class HomeActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
-//    NavigationView navigationView;
+    //    NavigationView navigationView;
     BottomNavigationView bottomNavigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
-        if (SDK_INT > 8)
-        {
+        if (SDK_INT > 8) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                     .permitAll().build();
             StrictMode.setThreadPolicy(policy);
             //your codes here
 
         }
+
+
         setContentView(R.layout.activity_main);
 //        navigationView = findViewById(R.id.nav_view);
         bottomNavigationView = findViewById(R.id.bottom_navigation);
@@ -66,16 +69,19 @@ public class HomeActivity extends AppCompatActivity {
             return true;
         });
     }
-    public void gotoDetailNewsFragment(News news){
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-       DetailNewsFragment detailNewsFragment = new DetailNewsFragment();
-       Bundle bundle = new Bundle();
-       bundle.putSerializable("news",news);
-       detailNewsFragment.setArguments(bundle);
 
-       fragmentTransaction.replace(R.id.fragment_container,detailNewsFragment);
+    public void gotoDetailNewsFragment(News news) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        DetailNewsFragment detailNewsFragment = new DetailNewsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("news", news);
+        detailNewsFragment.setArguments(bundle);
+
+        fragmentTransaction.replace(R.id.fragment_container, detailNewsFragment);
         fragmentTransaction.addToBackStack(DetailNewsFragment.TAG);
         fragmentTransaction.commit();
 
     }
+
+
 }
