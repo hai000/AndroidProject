@@ -307,14 +307,15 @@ public class DetailNewsFragment extends Fragment implements Obserable {
                                         // Ở đây tôi sẽ sử dụng thời gian giả định là currentTimeMillis
 
 
-                                        // Cập nhật giá trị của SeekBar trong UI Thread
+                                        // Cập nhật giá trị của SeekBar trong UI Threa
+                                        if(getActivity()!=null){
                                         getActivity().runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
                                                 timeCurrnet.setText(String.format("%02d:%02d", exoPlayer.getCurrentPosition() / 60000, (exoPlayer.getCurrentPosition() % 60000) / 1000));
                                                 seekBar.setProgress((int) (exoPlayer.getCurrentPosition()));
                                             }
-                                        });
+                                        });}
                                     }
                                 };
 
@@ -364,12 +365,14 @@ public class DetailNewsFragment extends Fragment implements Obserable {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
-        exoPlayer.release();
+
+
         if (timer != null) {
             timer.cancel();
             timer = null;
         }
+        exoPlayer.release();
+        super.onDestroy();
     }
 
     private Runnable myRunnable = new Runnable() {
