@@ -109,7 +109,10 @@ public class APIExpress extends ObserverNetworking {
         Document document = connect(BASE_URL + (category == "" ? "" : category + ".htm"));
 
         Elements articles = document.getElementsByClass("box-category-item");
-
+if(category.equalsIgnoreCase(Category.podcast)){
+    Elements podcast = document.getElementsByClass("item-first");
+    articles.addAll(podcast);
+}
         for (Element article : articles) {
 
             String image = article.getElementsByTag("img").attr("src");
